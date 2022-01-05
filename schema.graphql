@@ -1,18 +1,30 @@
 type Account @entity {
   id: ID!
   signerId: String!
-  log: [Log!]!
+  swap: [Swap!]!
+  liquidity: [AddLiquidity!]!
 }
 
-type Log @entity {
+type Swap @entity {
   id: ID!
-  standard: String!
-  version: String!
-  event: String!
-  adminId: String
-  adminSet: BigInt
-  accountId: String
-  did: String
-  registered: BigInt
-  owner: String
+  output: String
+  action: String
+  blocktime: BigInt
+  firstTokenAmount: BigInt
+  firstToken: String
+  secondTokenAmount: BigInt
+  secondToken: String
+}
+
+type AddLiquidity @entity {
+  id: ID!
+  output: String
+  blocktime: BigInt
+  functionCalled: String
+  functionAction: String
+  firstPoolAmount: BigInt
+  firstPool: String
+  secondPoolAmount: BigInt
+  secondPool: String
+  sharesMinted: BigInt
 }

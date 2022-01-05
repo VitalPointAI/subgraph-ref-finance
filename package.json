@@ -1,12 +1,13 @@
 {
-  "name": "near-receipts",
+  "name": "ref-finance-subgraph",
+  "author": "Aaron Luhning",
   "version": "0.1.0",
   "repository": "https://github.com/VitalPointAI/graph-near-receipts.git",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy <GITHUBNAME/SUBGRAPH> --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
+    "deploy": "graph deploy aluhning/ref-finance --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.25.1",

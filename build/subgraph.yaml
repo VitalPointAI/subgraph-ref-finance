@@ -1,5 +1,5 @@
 specVersion: 0.0.4
-description: DID registry
+description: Ref Finance
 repository: https://github.com/VitalPointAI/near-subgraph-template.git
 schema:
   file: schema.graphql
@@ -8,14 +8,15 @@ dataSources:
     name: receipts
     network: near-mainnet
     source:
-      account: did.near
-      startBlock: 54167320
+      account: v2.ref-finance.near
+      startBlock: 45752813
     mapping:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: receipts/receipts.wasm
       entities:
         - Account
-        - Log
+        - Swap
+        - AddLiquidity
       receiptHandlers:
         - handler: handleReceipt
