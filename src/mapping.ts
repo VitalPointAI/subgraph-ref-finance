@@ -33,13 +33,14 @@ function handleAction(
   if (functionCall.methodName == "swap") {
     const receiptId = receipt.id.toHexString();
       accounts.signerId = receipt.signerId;
-
+      accounts.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
+      
       // Maps the JSON formatted log to the LOG entity
       let logs = new Swap(`${receiptId}`);
       if(outcome.logs[0]!=null){
         logs.id = receipt.signerId;
         logs.output = outcome.logs[0]
-        logs.blocktime = BigInt.fromU64(blockHeader.timestampNanosec/1000000)
+        logs.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
         let rawString = outcome.logs[0]
         let splitString = rawString.split(' ')
         logs.action = splitString[0].toString()
@@ -48,53 +49,6 @@ function handleAction(
         logs.secondTokenAmount = BigInt.fromString(splitString[4])
         logs.secondToken = splitString[5].toString()
 
-      //  let parsed = json.fromString(outcome.logs[0])
-       // if(parsed.kind == JSONValueKind.OBJECT){
-
-      //  //   let entry = parsed.toObject()
-
-      //     //EVENT_JSON
-      //     let eventJSON = entry.entries[0].value.toObject()
-
-      //     //standard, version, event (these stay the same for a NEP 171 emmitted log)
-      //     for(let i = 0; i < eventJSON.entries.length; i++){
-      //       let key = eventJSON.entries[i].key.toString()
-      //       switch (true) {
-      //         case key == 'standard':
-      //           logs.standard = eventJSON.entries[i].value.toString()
-      //           break
-      //         case key == 'event':
-      //           logs.event = eventJSON.entries[i].value.toString()
-      //           break
-      //         case key == 'version':
-      //           logs.version = eventJSON.entries[i].value.toString()
-      //           break
-      //       }
-      //     }
-
-      //     //data
-      //     let data = eventJSON.entries[0].value.toObject()
-      //     for(let i = 0; i < data.entries.length; i++){
-      //       let key = data.entries[i].key.toString()
-      //       // Replace each key with the key of the data your are emitting,
-      //       // Ensure you add the keys to the Log entity and that the types are correct
-      //       switch (true) {
-      //         case key == 'accountId':
-      //           logs.accountId = data.entries[i].value.toString()
-      //           break
-      //         case key == 'did':
-      //           logs.did = data.entries[i].value.toString()
-      //           break
-      //         case key == 'registered':
-      //           logs.registered = data.entries[i].value.toBigInt()
-      //           break
-      //         case key == 'owner':
-      //           logs.owner = data.entries[i].value.toString()
-      //           break
-      //       }
-      //     }
-
-      //  }
         logs.save()
       }
 
@@ -114,7 +68,7 @@ function handleAction(
       if(outcome.logs[0]!=null){
         liquidity.id = receipt.signerId;
         liquidity.output = outcome.logs[0]
-        liquidity.blocktime = BigInt.fromU64(blockHeader.timestampNanosec/1000000)
+        liquidity.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
         let rawString = outcome.logs[0]
         let splitString = rawString.split(' ')
         liquidity.functionCalled = functionCall.methodName
