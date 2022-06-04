@@ -1,4 +1,4 @@
-import { near, log, BigInt, json, JSONValueKind } from "@graphprotocol/graph-ts";
+import { near, log, BigInt, json } from "@graphprotocol/graph-ts";
 import { Account, Swap, AddLiquidity } from "../generated/schema";
 
 export function handleReceipt(receipt: near.ReceiptWithOutcome): void {
@@ -65,8 +65,12 @@ function handleAction(
 
       // Maps the JSON formatted log to the LOG entity
       let liquidity = new AddLiquidity(`${receiptId}`);
-      if(outcome.logs[0]!=null){
+      let args = json.try_fromBytes(action.toFunctionCall().args)
+      if(outcome.logs[0]!=null && args.isOk){
+        let poolId = args.value.toObject().get("pool_id")!.toBigInt()
+
         liquidity.id = receipt.signerId;
+        liquidity.poolId = poolId;
         liquidity.output = outcome.logs[0]
         liquidity.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
         let rawString = outcome.logs[0]
