@@ -56,6 +56,23 @@ export class Account extends Entity {
     this.set("signerId", Value.fromString(value));
   }
 
+  get blockTimestamp(): BigInt | null {
+    let value = this.get("blockTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockTimestamp(value: BigInt | null) {
+    if (!value) {
+      this.unset("blockTimestamp");
+    } else {
+      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get swap(): Array<string> {
     let value = this.get("swap");
     return value!.toStringArray();
@@ -141,8 +158,8 @@ export class Swap extends Entity {
     }
   }
 
-  get blocktime(): BigInt | null {
-    let value = this.get("blocktime");
+  get blockTimestamp(): BigInt | null {
+    let value = this.get("blockTimestamp");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -150,11 +167,11 @@ export class Swap extends Entity {
     }
   }
 
-  set blocktime(value: BigInt | null) {
+  set blockTimestamp(value: BigInt | null) {
     if (!value) {
-      this.unset("blocktime");
+      this.unset("blockTimestamp");
     } else {
-      this.set("blocktime", Value.fromBigInt(<BigInt>value));
+      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -259,6 +276,23 @@ export class AddLiquidity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get poolId(): BigInt | null {
+    let value = this.get("poolId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set poolId(value: BigInt | null) {
+    if (!value) {
+      this.unset("poolId");
+    } else {
+      this.set("poolId", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get output(): string | null {
     let value = this.get("output");
     if (!value || value.kind == ValueKind.NULL) {
@@ -276,8 +310,8 @@ export class AddLiquidity extends Entity {
     }
   }
 
-  get blocktime(): BigInt | null {
-    let value = this.get("blocktime");
+  get blockTimestamp(): BigInt | null {
+    let value = this.get("blockTimestamp");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -285,11 +319,11 @@ export class AddLiquidity extends Entity {
     }
   }
 
-  set blocktime(value: BigInt | null) {
+  set blockTimestamp(value: BigInt | null) {
     if (!value) {
-      this.unset("blocktime");
+      this.unset("blockTimestamp");
     } else {
-      this.set("blocktime", Value.fromBigInt(<BigInt>value));
+      this.set("blockTimestamp", Value.fromBigInt(<BigInt>value));
     }
   }
 

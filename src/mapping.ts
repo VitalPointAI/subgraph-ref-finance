@@ -1,13 +1,13 @@
-import { near, log, BigInt, json, JSONValueKind } from "@graphprotocol/graph-ts";
+import { near, log, BigInt, json } from "@graphprotocol/graph-ts";
 import { Account, Swap, AddLiquidity } from "../generated/schema";
 
 export function handleReceipt(receipt: near.ReceiptWithOutcome): void {
   const actions = receipt.receipt.actions;
-  
+
   for (let i = 0; i < actions.length; i++) {
     handleAction(
-      actions[i], 
-      receipt.receipt, 
+      actions[i],
+      receipt.receipt,
       receipt.block.header,
       receipt.outcome
       );
@@ -20,12 +20,12 @@ function handleAction(
   blockHeader: near.BlockHeader,
   outcome: near.ExecutionOutcome
 ): void {
-  
+
   if (action.kind != near.ActionKind.FUNCTION_CALL) {
     log.info("Early return: {}", ["Not a function call"]);
     return;
   }
-  
+
   let accounts = new Account(receipt.signerId);
   const functionCall = action.toFunctionCall();
 
@@ -34,7 +34,7 @@ function handleAction(
     const receiptId = receipt.id.toHexString();
       accounts.signerId = receipt.signerId;
       accounts.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
-      
+
       // Maps the JSON formatted log to the LOG entity
       let logs = new Swap(`${receiptId}`);
       if(outcome.logs[0]!=null){
@@ -53,7 +53,7 @@ function handleAction(
       }
 
       accounts.swap.push(logs.id);
-      
+
   } else {
     log.info("Not processed - FunctionCall is: {}", [functionCall.methodName]);
   }
@@ -65,8 +65,12 @@ function handleAction(
 
       // Maps the JSON formatted log to the LOG entity
       let liquidity = new AddLiquidity(`${receiptId}`);
-      if(outcome.logs[0]!=null){
+      let args = json.try_fromBytes(action.toFunctionCall().args)
+      if(outcome.logs[0]!=null && args.isOk){
+        let poolId = args.value.toObject().get("pool_id")!.toBigInt()
+
         liquidity.id = receipt.signerId;
+        liquidity.poolId = poolId;
         liquidity.output = outcome.logs[0]
         liquidity.blockTimestamp = BigInt.fromU64(blockHeader.timestampNanosec/1000000000)
         let rawString = outcome.logs[0]

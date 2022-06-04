@@ -19,6 +19,7 @@ type Swap @entity {
 
 type AddLiquidity @entity {
   id: ID!
+  poolId: BigInt!
   output: String
   blockTimestamp: BigInt
   functionCalled: String

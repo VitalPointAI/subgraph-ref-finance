@@ -1,6 +1,7 @@
 type Account @entity {
   id: ID!
   signerId: String!
+  blockTimestamp: BigInt
   swap: [Swap!]!
   liquidity: [AddLiquidity!]!
 }
@@ -9,7 +10,7 @@ type Swap @entity {
   id: ID!
   output: String
   action: String
-  blocktime: BigInt
+  blockTimestamp: BigInt
   firstTokenAmount: BigInt
   firstToken: String
   secondTokenAmount: BigInt
@@ -18,8 +19,9 @@ type Swap @entity {
 
 type AddLiquidity @entity {
   id: ID!
+  poolId: BigInt!
   output: String
-  blocktime: BigInt
+  blockTimestamp: BigInt
   functionCalled: String
   functionAction: String
   firstPoolAmount: BigInt
